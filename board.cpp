@@ -1,4 +1,6 @@
 #include "board.hpp"
+using namespace std;
+#include <iostream>
 
 /*
  * Make a standard 8x8 othello board and initialize it to the standard setup.
@@ -10,6 +12,7 @@ Board::Board() {
     taken.set(4 + 8 * 4);
     black.set(4 + 8 * 3);
     black.set(3 + 8 * 4);
+
 }
 
 /*
@@ -177,4 +180,193 @@ void Board::setBoard(char data[]) {
             taken.set(i);
         }
     }
+}
+
+vector<Move*> Board::possibleMoves(Side side)
+{
+    vector<Move*> possibleMoves;
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            Move *move = new Move(i,j);
+            if (checkMove(move, side))
+            {
+                possibleMoves.push_back(move);
+            }
+        }
+    }
+    return possibleMoves;
+}
+
+int Board::findScore(Side my_side, Side their_side, Move *possibleMove)
+{
+    copy()->doMove(possibleMove, my_side);
+
+    int score = count(my_side) - count(their_side);
+
+    int X = possibleMove->getX();
+    int Y = possibleMove->getY();
+
+    // Corners
+    if (X == 0 && Y == 0)
+    {
+        score *= 3;
+    }
+    else if (X == 0 && Y == 7)
+    {
+        score *= 3;
+    }
+    else if (X == 7 && Y == 0)
+    {
+        score *= 3;
+    }
+    else if (X == 7 && Y == 7)
+    {
+        score *= 3;
+    }
+
+    // Edges
+    else if (X == 0 && Y == 2)
+    {
+        score *= 1.5;
+    }
+    else if (X == 0 && Y == 3)
+    {
+        score *= 1.5;
+    }
+    else if (X == 0 && Y == 4)
+    {
+        score *= 1.5;
+    }
+    else if (X == 0 && Y == 5)
+    {
+        score *= 1.5;
+    }
+
+    else if (X == 2 && Y == 0)
+    {
+        score *= 1.5;
+    }
+    else if (X == 3 && Y == 0)
+    {
+        score *= 1.5;
+    }
+    else if (X == 4 && Y == 0)
+    {
+        score *= 1.5;
+    }
+    else if (X == 5 && Y == 0)
+    {
+        score *= 1.5;
+    }
+
+    else if (X == 2 && Y == 7)
+    {
+        score *= 1.5;
+    }
+    else if (X == 3 && Y == 7)
+    {
+        score *= 1.5;
+    }
+    else if (X == 4 && Y == 7)
+    {
+        score *= 1.5;
+    }
+    else if (X == 5 && Y == 7)
+    {
+        score *= 1.5;
+    }
+
+    else if (X == 7 && Y == 2)
+    {
+        score *= 1.5;
+    }
+    else if (X == 7 && Y == 3)
+    {
+        score *= 1.5;
+    }
+    else if (X == 7 && Y == 4)
+    {
+        score *= 1.5;
+    }
+    else if (X == 7 && Y == 5)
+    {
+        score *= 1.5;
+    }
+    
+    // Adjacent to corners
+    else if (X == 0 && Y == 1)
+    {
+        score *= -3;
+    }
+    else if (X == 1 && Y == 0)
+    {
+        score *= -3;
+    }
+    else if (X == 1 && Y == 1)
+    {
+        score *= -3;
+    }
+    
+    else if (X == 0 && Y == 6)
+    {
+        score *= -3;
+    }
+    else if (X == 1 && Y == 6)
+    {
+        score *= -3;
+    }
+    else if (X == 1 && Y == 7)
+    {
+        score *= -3;
+    }
+    
+    else if (X == 6 && Y == 0)
+    {
+        score *= -3;
+    }
+    else if (X == 6 && Y == 1)
+    {
+        score *= -3;
+    }
+    else if (X == 7 && Y == 1)
+    {
+        score *= -3;
+    }
+
+    else if (X == 6 && Y == 6)
+    {
+        score *= -3;
+    }
+    else if (X == 6 && Y == 7)
+    {
+        score *= -3;
+    }
+    else if (X == 7 && Y == 6)
+    {
+        score *= -3;
+    }
+
+    return score;
+
+}
+
+Move* Board::findBestMove(Side my_side, Side their_side, vector<Move*> possibleMoves)
+{
+    int max_score = -1000000000;
+    Move *best_move;
+
+    for (unsigned int i = 0; i < possibleMoves.size(); i++)
+    {
+        int new_score = findScore(my_side, their_side, possibleMoves[i]);
+
+        if (new_score > max_score)
+        {
+            max_score = new_score;
+            best_move = possibleMoves[i];
+        }
+    }
+    cerr << best_move << endl;
+    return best_move;
 }

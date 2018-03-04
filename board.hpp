@@ -4,6 +4,7 @@
 #include <bitset>
 #include "common.hpp"
 using namespace std;
+#include <vector>
 
 class Board {
 
@@ -30,6 +31,9 @@ public:
     int countWhite();
 
     void setBoard(char data[]);
+    vector<Move*> possibleMoves(Side side);
+    int findScore(Side my_side, Side their_side, Move *possibleMove);
+    Move* findBestMove(Side my_side, Side their_side, vector<Move*> possibleMoves);
 };
 
 #endif
