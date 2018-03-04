@@ -1,3 +1,4 @@
+
 #include "player.hpp"
 
 /*
@@ -13,7 +14,7 @@ Player::Player(Side side) {
      * TODO: Do any initialization you need to do here (setting up the board,
      * precalculating things, etc.) However, remember that you will only have
      * 30 seconds.
-     */
+     */ 
 }
 
 /*
