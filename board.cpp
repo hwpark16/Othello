@@ -196,6 +196,7 @@ vector<Move*> Board::possibleMoves(Side side)
             }
         }
     }
+
     return possibleMoves;
 }
 
@@ -367,6 +368,6 @@ Move* Board::findBestMove(Side my_side, Side their_side, vector<Move*> possibleM
             best_move = possibleMoves[i];
         }
     }
-    cerr << best_move << endl;
+    
     return best_move;
 }
